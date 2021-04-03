@@ -10,7 +10,8 @@ class MerchantsFacade
       Merchant.obtain_merchants(params[:per_page].to_i, params[:page].to_i)
     end
   end
+
+  def self.merchants_show(id)
+    Merchant.obtain_one_merchant(id)
+  end
 end
-
-
-# all_merchants = MerchantsFacade.all_merchants(params[:per_page].to_i, params[:page].to_i)
