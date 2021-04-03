@@ -8,4 +8,8 @@ class Merchant < ApplicationRecord
       (page - 1) * per_page
     end
   end
+
+  def self.obtain_one_merchant(id)
+    Merchant.find_by_id(id: id)
+  end
 end
