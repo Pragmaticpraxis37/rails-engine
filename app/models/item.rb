@@ -2,7 +2,6 @@ class Item < ApplicationRecord
   belongs_to :merchant
 
   def self.obtain_items(per_page, page)
-    # require "pry"; binding.pry
     limit(per_page).offset(self.offset_count(per_page, page))
   end
 
@@ -11,5 +10,9 @@ class Item < ApplicationRecord
     unless page.to_i == 1
       (page.to_i - 1) * per_page
     end
+  end
+
+  def self.obtain_one_item(id)
+    find(id)
   end
 end
