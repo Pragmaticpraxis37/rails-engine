@@ -11,4 +11,8 @@ class ItemsFacade
       Item.obtain_items(params[:per_page].to_i, params[:page].to_i)
     end
   end
+
+  def self.items_show(id)
+    Item.obtain_one_item(id)
+  end
 end
