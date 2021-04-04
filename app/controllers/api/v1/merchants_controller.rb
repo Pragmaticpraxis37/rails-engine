@@ -8,7 +8,7 @@ module Api
       end
 
       def show
-        merchant = MerchantsFacade.merchants_show(params[:id])
+        merchant = MerchantsFacade.merchants_show(params[:id].to_i)
         render json: MerchantSerializer.new(merchant)
       end
     end
