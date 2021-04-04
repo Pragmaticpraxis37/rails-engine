@@ -46,7 +46,7 @@ describe 'Merchants Index API' do
     end
 
     it 'sends a list of 50 merchants if requested in per_page query param' do
-      get api_v1_merchants_path, params: {per_page: 50, page: 1}
+      get api_v1_merchants_path, params: {per_page: "50", page: "1"}
 
       expect(response).to be_successful
 
@@ -57,7 +57,7 @@ describe 'Merchants Index API' do
 
     it 'sends a list of merchants 51-100 if per_page query param is 50 and
         page query param is 2' do
-      get api_v1_merchants_path, params: {per_page: 50, page: 2}
+      get api_v1_merchants_path, params: {per_page: "50", page: "2"}
 
       expect(response).to be_successful
 
@@ -108,8 +108,24 @@ describe 'Merchants Index API' do
   end
 
   describe 'sad path' do
+    it 'defaults to page 1 if page query param is 0' do
+      get api_v1_merchants_path, params: {page: 0}
 
+      expect(response).to be_successful
 
+      merchants = JSON.parse(response.body, symbolize_names: true)
 
+      expect(merchants[:data].count).to eq(20)
+    end
+
+    it 'defaults to page 1 if page query param is less than 1' do
+      get api_v1_merchants_path, params: {page: -1}
+
+      expect(response).to be_successful
+
+      merchants = JSON.parse(response.body, symbolize_names: true)
+
+      expect(merchants[:data].count).to eq(20)
+    end
   end
 end

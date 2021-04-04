@@ -4,8 +4,14 @@ class Merchant < ApplicationRecord
   end
 
   def self.offset_count(per_page, page)
-    unless page == 1
-      (page - 1) * per_page
+    if page.to_i <= 0 then page = 1 end
+    unless page.to_i == 1
+      (page.to_i - 1) * per_page
     end
   end
+
+  def self.obtain_one_merchant(id)
+    find(id)
+  end
+
 end
