@@ -1,5 +1,6 @@
 class ItemsFacade
   def self.items_index(params)
+    # require "pry"; binding.pry
     if params[:per_page].nil? == true && params[:page].nil? == true
       Item.obtain_items(20, 1)
     elsif params[:per_page].nil? == true
