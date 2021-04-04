@@ -34,23 +34,12 @@ describe 'Merchants Index API' do
       expect(merchant[:data][:attributes][:name]).to be_a(String)
     end
 
-    it '' do
-      get api_v1_merchant_path(1000000000)
-
-      expect(response).to be_successful
+    it 'send a ' do
+      get api_v1_merchant_path("1000000000")
 
       merchant = JSON.parse(response.body, symbolize_names: true)
 
-      require "pry"; binding.pry
-
-      expect(merchant[:data]).to have_key(:id)
-      expect(merchant[:data][:id]).to be_an(String)
-      expect(merchant[:data]).to have_key(:type)
-      expect(merchant[:data][:type]).to be_a(String)
-      expect(merchant[:data]).to have_key(:attributes)
-      expect(merchant[:data][:attributes]).to be_a(Hash)
-      expect(merchant[:data][:attributes]).to have_key(:name)
-      expect(merchant[:data][:attributes][:name]).to be_a(String)
+      expect(merchant[:error]).to eq("Couldn't find Merchant with 'id'=1000000000")
     end
   end
 end
