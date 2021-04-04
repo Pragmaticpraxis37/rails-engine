@@ -13,5 +13,4 @@ class Merchant < ApplicationRecord
   def self.obtain_one_merchant(id)
     find(id)
   end
-
 end
