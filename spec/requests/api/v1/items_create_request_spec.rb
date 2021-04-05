@@ -64,7 +64,7 @@ describe 'Items Create API' do
   end
 
   describe 'sad path' do
-    it  'only accepts a JSON body with the following fields: name, description,
+    it 'only accepts a JSON body with the following fields: name, description,
         unit_price, and merchant_id' do
 
       item_params = ({
@@ -83,8 +83,6 @@ describe 'Items Create API' do
 
       item = JSON.parse(response.body, symbolize_names: true)
 
-      require "pry"; binding.pry
-
       expect(item[:data]).to have_key(:id)
       expect(item[:data][:id]).to be_an(String)
       expect(item[:data]).to have_key(:type)
@@ -101,6 +99,25 @@ describe 'Items Create API' do
       expect(item[:data][:attributes]).to have_key(:merchant_id)
       expect(item[:data][:attributes][:merchant_id]).to be_an(Integer)
       expect(item[:data]).to_not have_key(:review)
+    end
+
+    it 'will not create an Item without all of the following fields: name,
+        description, unit_price, and merchant_id' do
+
+      item_params = ({
+        name: 'Wobbler',
+        description: 'Wobbles',
+        })
+
+      headers = {"CONTENT_TYPE" => "application/json"}
+
+      post api_v1_items_path, headers: headers, params: JSON.generate(item: item_params)
+
+      expect(response).to be_successful
+
+      created_item = Item.last
+
+      expect(created_item).to eq(nil)
     end
   end
 end
