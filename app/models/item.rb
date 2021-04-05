@@ -1,7 +1,11 @@
 class Item < ApplicationRecord
-  validates :name, :description, :unit_price, :merchant_id, presence: true 
+  validates :name, :description, :unit_price, :merchant_id, presence: true
   validates_associated :merchant
   belongs_to :merchant
+  has_many :invoice_items
+  has_many :invoices, through: :invoice_items, dependent: :destroy
+  has_many :transactions, through: :invoices
+
 
   def self.obtain_items(per_page, page)
     limit(per_page).offset(self.offset_count(per_page, page))
