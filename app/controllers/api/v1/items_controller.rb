@@ -16,6 +16,11 @@ module Api
         render json: ItemSerializer.new(new_item)
       end
 
+      def destroy
+        Item.destory(params[:id])
+        require "pry"; binding.pry
+      end
+
       private
 
       def item_params
