@@ -17,8 +17,9 @@ module Api
       end
 
       def destroy
-        Item.destory(params[:id])
-        require "pry"; binding.pry
+        item = Item.find(params[:id])
+        Invoice.destroy(item.delete_invoice)
+        Item.destroy(params[:id])
       end
 
       private
