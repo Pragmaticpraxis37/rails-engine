@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
 
+  include ActionController::Helpers
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
   # resuce_from ActiveRecord::RecordInvalid, with: :render_not_created_response
 
