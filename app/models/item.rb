@@ -2,8 +2,8 @@ class Item < ApplicationRecord
   validates :name, :description, :unit_price, :merchant_id, presence: true
   validates_associated :merchant
   belongs_to :merchant
-  has_many :invoice_items
-  has_many :invoices, through: :invoice_items, dependent: :destroy
+  has_many :invoice_items, dependent: :destroy
+  has_many :invoices, through: :invoice_items
   has_many :transactions, through: :invoices
 
 
@@ -20,5 +20,12 @@ class Item < ApplicationRecord
 
   def self.obtain_one_item(id)
     find(id)
+  end
+
+  def delete_invoice
+    invoices.joins(:items)
+    .select("invoices.*, count(items.*)")
+    .group("invoices.id")
+    .having("count(items.*) = 1").pluck(:id)
   end
 end
