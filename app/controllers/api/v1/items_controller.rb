@@ -16,6 +16,10 @@ module Api
         render json: ItemSerializer.new(new_item)
       end
 
+      def update
+        updated_item = Item.update(item_params) if Merchant.find(params[:item][:merchant_id])
+      end
+
       def destroy
         item = Item.find(params[:id])
         Invoice.destroy(item.delete_invoice)
@@ -28,6 +32,5 @@ module Api
         params.require(:item).permit(:name, :description, :unit_price, :merchant_id)
       end
     end
-
   end
 end
