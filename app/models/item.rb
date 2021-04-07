@@ -8,7 +8,7 @@ class Item < ApplicationRecord
 
 
   def self.obtain_items(per_page, page)
-    limit(per_page).offset(self.offset_count(per_page, page))
+    offset(self.offset_count(per_page, page)).limit(per_page)
   end
 
   def self.offset_count(per_page, page)
@@ -21,6 +21,19 @@ class Item < ApplicationRecord
   def self.obtain_one_item(id)
     find(id)
   end
+
+  def self.find_item(name)
+    where("name ILIKE ? or description LIKE ?", "%#{name}%", "%#{name}%")
+    .order(:name).first
+  end
+
+  def self.min_price(min_price)
+    min_price = min_price.to_f
+    Item.where("unit_price <= ?", min_price).order(:name).limit(1).first
+  end
+
+
+
 
   def delete_invoice
     invoices.joins(:items)

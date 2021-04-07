@@ -19,4 +19,8 @@ class Merchant < ApplicationRecord
   def self.obtain_one_merchant(id)
     find(id)
   end
+
+  def self.find_merchant(name)
+    find_by("name ILIKE ?", "%#{name.downcase}%")
+  end
 end

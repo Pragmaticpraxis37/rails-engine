@@ -48,7 +48,7 @@ describe 'Merchants Index API' do
 
       item = JSON.parse(response.body, symbolize_names: true)
 
-      expect(item[:error]).to eq("Couldn't find Item with 'id'=1000000000")
+      expect(item[:error]).to eq("Resource not found")
     end
   end
 end

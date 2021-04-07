@@ -113,8 +113,6 @@ describe 'Items Create API' do
 
       post api_v1_items_path, headers: headers, params: JSON.generate(item: item_params)
 
-      expect(response).to be_successful
-
       created_item = Item.last
 
       expect(created_item).to eq(nil)
