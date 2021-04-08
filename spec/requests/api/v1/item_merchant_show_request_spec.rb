@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-describe 'Merchants Index API' do
+describe 'Item ID Shows Merchant Data API' do
   before :each do
-    @merchant_1 = create(:merchant)
     @merchant_2 = create(:merchant)
+    @item_2 = create(:item, merchant: @merchant_2)
   end
 
   describe 'happy path' do
-    it "sends a single merchant in an array called 'data'" do
-      get api_v1_merchant_path(@merchant_1.id)
+    it "shows a merchant data for a merchant associated with a particular item" do
+      get api_v1_items_merchant_path(@item_2.id)
 
       expect(response).to be_successful
 
@@ -18,7 +18,7 @@ describe 'Merchants Index API' do
     end
 
     it 'sends a single merchant with attributes' do
-      get api_v1_merchant_path(@merchant_2.id)
+      get api_v1_items_merchant_path(@item_2.id)
 
       expect(response).to be_successful
 
@@ -34,7 +34,7 @@ describe 'Merchants Index API' do
       expect(merchant[:data][:attributes][:name]).to be_a(String)
     end
 
-    it 'send a ' do
+    it 'send a error message if the item does not exist and therefore no merchant exists' do
       get api_v1_merchant_path("1000000000")
 
       merchant = JSON.parse(response.body, symbolize_names: true)

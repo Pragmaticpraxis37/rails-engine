@@ -20,7 +20,6 @@ describe 'Items Create API' do
 
       expect(response).to be_successful
 
-
       created_item = Item.last
 
       expect(created_item.name).to eq(item_params[:name])
@@ -112,8 +111,6 @@ describe 'Items Create API' do
       headers = {"CONTENT_TYPE" => "application/json"}
 
       post api_v1_items_path, headers: headers, params: JSON.generate(item: item_params)
-
-      expect(response).to be_successful
 
       created_item = Item.last
 

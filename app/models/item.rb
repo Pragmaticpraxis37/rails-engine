@@ -8,7 +8,7 @@ class Item < ApplicationRecord
 
 
   def self.obtain_items(per_page, page)
-    limit(per_page).offset(self.offset_count(per_page, page))
+    offset(self.offset_count(per_page, page)).limit(per_page)
   end
 
   def self.offset_count(per_page, page)
@@ -20,6 +20,37 @@ class Item < ApplicationRecord
 
   def self.obtain_one_item(id)
     find(id)
+  end
+
+  def self.find_items(name)
+    where("name ILIKE ? or description LIKE ?", "%#{name}%", "%#{name}%")
+    .order(:name)
+  end
+
+  def self.min_price(min_price)
+    min_price = min_price.to_f
+    Item.where("unit_price >= ?", min_price).order(:name)
+  end
+
+  def self.max_price(max_price)
+    max_price = max_price.to_f
+    Item.where("unit_price <= ?", max_price).order(:name)
+  end
+
+  def self.price_range(min_price, max_price)
+    min_price = min_price.to_f
+    max_price = max_price.to_f
+    Item.where("unit_price >= ? and unit_price <= ?", min_price, max_price).order(:name)
+  end
+
+  def self.most_revenue(quantity=10)
+    joins(:transactions)
+    .where("transactions.result = ?", "success")
+    .where("invoices.status = ?", "shipped")
+    .select("items.id, sum(invoice_items.unit_price * invoice_items.quantity) AS revenue")
+    .group(:id)
+    .order("revenue desc")
+    .limit(quantity)
   end
 
   def delete_invoice
