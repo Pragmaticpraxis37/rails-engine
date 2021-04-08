@@ -43,6 +43,16 @@ class Item < ApplicationRecord
     Item.where("unit_price >= ? and unit_price <= ?", min_price, max_price).order(:name)
   end
 
+  def self.most_revenue(quantity=10)
+    joins(:transactions)
+    .where("transactions.result = ?", "success")
+    .where("invoices.status = ?", "shipped")
+    .select("items.id, sum(invoice_items.unit_price * invoice_items.quantity) AS revenue")
+    .group(:id)
+    .order("revenue desc")
+    .limit(quantity)
+  end
+
   def delete_invoice
     invoices.joins(:items)
     .select("invoices.*, count(items.*)")

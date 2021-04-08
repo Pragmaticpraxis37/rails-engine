@@ -16,13 +16,15 @@ module Api
         if new_item.save
           render json: ItemSerializer.new(new_item), status: :created
         end
-        # else
-        #   render json: { error: "Item not created" }, status: 400
-        # end
       end
 
       def update
-        updated_item = Item.update(item_params) if Merchant.find(params[:item][:merchant_id])
+        if (Item.find(params[:id]) && params[:item][:merchant_id].present? && Merchant.find(params[:item][:merchant_id])) || Item.find(params[:id])
+          updated_item = Item.update(params[:id], item_params)
+          render json: ItemSerializer.new(updated_item), status: :created
+        else
+          render json: {data: { error: "The merchant id you passed in does not correspond to an existing merchant"}}, status: 404
+        end
       end
 
       def destroy
@@ -39,3 +41,16 @@ module Api
     end
   end
 end
+
+
+
+
+
+
+# require "pry"; binding.pry
+# if Item.find(params[:id]) && params[:item][:merchant_id].present? && Merchant.find(params[:item][:merchant_id])
+#   updated_item = Item.update(params[:id], item_params)
+#   render json: ItemSerializer.new(updated_item), status: :created
+# else
+#   render json: {data: { error: "The merchant id you passed in does not correspond to an existing merchant"}}, status: 404
+# end

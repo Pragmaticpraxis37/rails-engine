@@ -5,7 +5,6 @@ class Merchant < ApplicationRecord
   has_many :customers, through: :invoices
   has_many :transactions, through: :invoices
 
-
   def self.obtain_merchants(per_page, page)
     limit(per_page).offset(self.offset_count(per_page, page))
   end
@@ -49,7 +48,8 @@ class Merchant < ApplicationRecord
     transactions
     .where("transactions.result = ?", "success")
     .where("invoices.status = ?", "shipped")
-    .pluck("invoice_items.unit_price * invoice_items.quantity")
+    .pluck("sum(invoice_items.unit_price * invoice_items.quantity) AS total")
+    .first
   end
 end
 
