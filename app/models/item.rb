@@ -22,18 +22,26 @@ class Item < ApplicationRecord
     find(id)
   end
 
-  def self.find_item(name)
+  def self.find_items(name)
     where("name ILIKE ? or description LIKE ?", "%#{name}%", "%#{name}%")
-    .order(:name).first
+    .order(:name)
   end
 
   def self.min_price(min_price)
     min_price = min_price.to_f
-    Item.where("unit_price <= ?", min_price).order(:name).limit(1).first
+    Item.where("unit_price >= ?", min_price).order(:name)
   end
 
+  def self.max_price(max_price)
+    max_price = max_price.to_f
+    Item.where("unit_price <= ?", max_price).order(:name)
+  end
 
-
+  def self.price_range(min_price, max_price)
+    min_price = min_price.to_f
+    max_price = max_price.to_f
+    Item.where("unit_price >= ? and unit_price <= ?", min_price, max_price).order(:name)
+  end
 
   def delete_invoice
     invoices.joins(:items)
