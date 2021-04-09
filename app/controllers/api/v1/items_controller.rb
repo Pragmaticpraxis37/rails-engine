@@ -22,8 +22,6 @@ module Api
         if (Item.find(params[:id]) && params[:item][:merchant_id].present? && Merchant.find(params[:item][:merchant_id])) || Item.find(params[:id])
           updated_item = Item.update(params[:id], item_params)
           render json: ItemSerializer.new(updated_item), status: :created
-        else
-          render json: {data: { error: "The merchant id you passed in does not correspond to an existing merchant"}}, status: 404
         end
       end
 
@@ -41,16 +39,3 @@ module Api
     end
   end
 end
-
-
-
-
-
-
-# require "pry"; binding.pry
-# if Item.find(params[:id]) && params[:item][:merchant_id].present? && Merchant.find(params[:item][:merchant_id])
-#   updated_item = Item.update(params[:id], item_params)
-#   render json: ItemSerializer.new(updated_item), status: :created
-# else
-#   render json: {data: { error: "The merchant id you passed in does not correspond to an existing merchant"}}, status: 404
-# end
