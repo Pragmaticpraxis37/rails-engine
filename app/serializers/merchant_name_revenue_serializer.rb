@@ -6,17 +6,4 @@ class MerchantNameRevenueSerializer
     attr = Merchant.find(merchant.id)
     attr.name
   end
-
 end
-
-
-#
-# {
-#   "data": [
-#     {
-#       "id": "1",
-#       "type": "merchant_name_revenue",
-#       "attributes": {
-#         "name": "Turing School",
-#         "revenue": 512.256128
-#       }

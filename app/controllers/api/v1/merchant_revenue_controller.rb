@@ -17,13 +17,3 @@ class Api::V1::MerchantRevenueController < ApplicationController
   end
 
 end
-
-
-
-
-
-  # def most_revenue
-  #   merchants = Merchant.most_revenue(params[:quantity])
-  #   @serial = merchants
-  #   render json: MerchantNameRevenueSerializer.new(@serial)
-  # end
